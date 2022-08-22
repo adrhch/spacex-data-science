@@ -7,11 +7,18 @@ from dash import dcc, html
 from dash.dependencies import Input, Output
 import plotly.express as px
 import dash_bootstrap_components as dbc
+import requests
+import io
+#wget "https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DS0321EN-SkillsNetwork/datasets/spacex_launch_dash.csv"
+# working locally with the file
+#spacex_df = pd.read_csv('spacex_launch_dash.csv')
 
-
+# Download from github
+csv_url = "https://raw.githubusercontent.com/adrhch/spacex-data-science/master/jupyter_notebooks/spacex_launch_dash.csv"
+download = requests.get(csv_url).content
 
 # Read the airline data into pandas dataframe
-spacex_df = pd.read_csv("spacex_launch_dash.csv")
+spacex_df = pd.read_csv(io.StringIO(download.decode('utf-8')))
 max_payload = spacex_df['Payload Mass (kg)'].max()
 min_payload = spacex_df['Payload Mass (kg)'].min()
 
